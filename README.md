@@ -9,6 +9,8 @@ A simple task runner for PHP 8.
 $ composer require juststeveking/task-runner
 ```
 
+## Usage
+
 ```php
 $runner = Runner::prepare([]);
 
