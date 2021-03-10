@@ -7,12 +7,19 @@ namespace JustSteveKing\TaskRunner\Tests;
 use PHPUnit\Framework\TestCase;
 use JustSteveKing\TaskRunner\Runner;
 use JustSteveKing\TaskRunner\Tasks\NullTask;
+use JustSteveKing\TaskRunner\Tests\Stubs\AddFive;
+use JustSteveKing\TaskRunner\Tests\Stubs\AddTwo;
 
 class RunnerTest extends TestCase
 {
-    protected function runner(array $tasks = []): Runner
-    {
-        return Runner::prepare($tasks);
+    protected function runner(
+        array $tasks = [],
+        array $payload = [],
+    ): Runner {
+        return Runner::prepare(
+            tasks: $tasks,
+            payload: $payload,
+        );
     }
 
     /**
@@ -51,7 +58,9 @@ class RunnerTest extends TestCase
 
         $task = $this->getMockForAbstractClass(NullTask::class);
 
-        $runner->add($task);
+        $runner->add(
+            task: $task,
+        );
 
         $this->assertNotEmpty(
             actual: $runner->tasks(),
@@ -60,6 +69,93 @@ class RunnerTest extends TestCase
         $this->assertCount(
             expectedCount: 1,
             haystack: $runner->tasks(),
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_a_task()
+    {
+        $runner = $this->runner();
+
+        $task = $this->getMockForAbstractClass(NullTask::class);
+
+        $runner->add(
+            task: $task,
+        );
+
+        $data = ['name' => 'PHPUnit'];
+
+        $payload = $runner->run(
+            payload: $data,
+        );
+
+        $this->assertNotEmpty(
+            actual: $payload,
+        );
+
+        $this->assertEquals(
+            expected: $data,
+            actual: $payload,
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_the_before_method_on_a_task()
+    {
+        $runner = $this->runner();
+
+        $runner->add(
+            task: new AddTwo(), 
+        );
+
+        $this->assertNotEmpty(
+            actual: $runner->tasks(),
+        );
+
+        $payload = $runner->run(
+            payload: ['count' => 1],
+        );
+
+        $this->assertNotEmpty(
+            actual: $payload,
+        );
+
+        $this->assertEquals(
+            expected: 3,
+            actual: $payload['count']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_the_before_and_after_methods()
+    {
+        $runner = $this->runner();
+
+        $runner->add(
+            task: new AddFive(), 
+        );
+
+        $this->assertNotEmpty(
+            actual: $runner->tasks(),
+        );
+
+        $payload = $runner->run(
+            payload: ['count' => 1],
+        );
+
+        $this->assertNotEmpty(
+            actual: $payload,
+        );
+
+        $this->assertEquals(
+            expected: 6,
+            actual: $payload['count']
         );
     }
 }
