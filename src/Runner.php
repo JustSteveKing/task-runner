@@ -34,4 +34,27 @@ class Runner
 
         return $this;
     }
+
+    public function run(array $payload): array
+    {
+        foreach ($this->tasks() as $task) {
+            if (method_exists($task, 'before')) {
+                $payload = $task->before(
+                    payload: $payload,
+                );
+            }
+
+            $payload = $task->handle(
+                payload: $payload,
+            );
+
+            if (method_exists($task, 'after')) {
+                $payload = $task->after(
+                    payload: $payload,
+                );
+            }
+        }
+
+        return $payload;
+    }
 }
