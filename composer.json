@@ -1,0 +1,17 @@
+{
+    "name": "juststeveking/task-runner",
+    "description": "A simple PHP task runner for PHP 8",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "10.0.x-dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve McDougall",
+            "email": "juststevemcd@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
