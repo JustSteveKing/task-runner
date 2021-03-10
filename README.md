@@ -11,6 +11,9 @@ $ composer require juststeveking/task-runner
 
 ```php
 $runner = Runner::prepare([]);
-$runner->add();
+
+$task = new AddOne();
+
+$runner->add($task);
 $runner->run();
 ```

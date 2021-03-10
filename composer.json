@@ -13,5 +13,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "JustSteveKing\\TaskRunner\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JustSteveKing\\TaskRunner\\Tests\\": "tests/"
+        }
+    }
 }
